@@ -1,0 +1,4 @@
+m.98281	c95b0824ccd627403aa63f9e474649cc	7571	Pfam	PF00041	Fibronectin type III domain	3729	3812	4.7E-14	T	04-04-2014	IPR003961	Fibronectin, type III	GO:0005515	
+m.98281	c95b0824ccd627403aa63f9e474649cc	7571	Pfam	PF00041	Fibronectin type III domain	6484	6567	1.8E-12	T	04-04-2014	IPR003961	Fibronectin, type III	GO:0005515	
+m.42655	de17ff06d901d22dacc3f5c91510f33f	288	Pfam	PF12171	Zinc-finger double-stranded RNA-binding	45	69	1.3E-5	T	05-04-2014	IPR022755	Zinc finger, double-stranded RNA binding		
+m.82734	ae22a6fcc80b2ac982378f16ac022b3d	144	Pfam	PF14846	Domain of unknown function (DUF4485)	8	89	4.8E-17	T	05-04-2014	IPR027831	Domain of unknown function DUF4485		
