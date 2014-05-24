@@ -5,19 +5,20 @@ import sys
 #Case 1: IPRScan
     # ipr <iprFileName> <outputFileName>
 #Case 2: asdf
-    # case2 <file1> <file 2> <outputFileName>
+    # sprot <blastoutFileName> <gffFileName> <fastaFileName> <outputFileName>
 
 def main(args):
     case = args[1]
     if case == "ipr":
-        fileInput = open(args[2], 'r')
+        iprFile = open(args[2], 'r')
         fileOutput = open(args[3], 'w')
-        results = read_ipr(fileInput)
-    elif case == "case2":
-        fileInput1 = open(args[2], 'r')
-        fileInput2 = open(args[3], 'r')
-	fileOutput = open(args[4], 'w')
-	results = read_case2(fileInput1, fileInput2)
+        results = read_ipr(iprFile)
+    elif case == "sprot":
+        blastFile = open(args[2], 'r')
+        gffFile = open(args[3], 'r')
+	fastaFile = open(args[4], 'r')
+	fileOutput = open(args[5], 'w')
+	results = read_case2(blastFile, gffFile, fastaFile)
     writeResults(results, fileOutput)
 
     #myFile = open(arg1, 'r')
@@ -35,8 +36,25 @@ def read_ipr(io_buffer):
                              == 0 or ipr_list[i] != ipr_list[i-1]]
     return ipr_list
 
-def read_case2(file1, file2):
-    print ""
+def read_case2(blastFile, gffFile, fastaFile):
+    return getFastaHeaders(fastaFile)
+
+def getFastaHeaders(fastaFile):
+    lines = []
+    for line in fastaFile:
+	if line[0] == '>':
+	    words = line.split(" ")
+            ref = words[0]
+	    i=0
+	    while words[i].find("OS=") == -1:
+		i += 1
+	    product = words[i-1]
+	    if words[i+1].find("GN=") == -1:
+		name = "UNKNOWN"
+	    else:
+		name = words[i+1]
+	    line.append([ref, product, name])
+    return lines
 
 def writeResults(results, fileOut):
     for line in results:
