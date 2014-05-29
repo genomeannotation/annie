@@ -4,7 +4,7 @@ import sys
 #The command-line arguments will be:
 #Case 1: IPRScan
     # ipr <iprFileName> <outputFileName>
-#Case 2: asdf
+#Case 2: Sprot Scan
     # sprot <blastoutFileName> <gffFileName> <fastaFileName> <outputFileName>
 
 def main(args):
@@ -19,6 +19,9 @@ def main(args):
 	fastaFile = open(args[4], 'r')
 	fileOutput = open(args[5], 'w')
 	results = read_sprot(blastFile, gffFile, fastaFile)
+    else:
+	print "That case is not yet supported"
+	exit()
     writeResults(results, fileOutput)
 
     #myFile = open(arg1, 'r')
