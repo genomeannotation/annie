@@ -24,9 +24,6 @@ def main(args):
 	exit()
     writeResults(results, fileOutput)
 
-    #myFile = open(arg1, 'r')
-    #print myFile.read()
-
 def read_ipr(io_buffer):
     """Returns a list of lists, each containing mrna_id, "Dbxref" and annotation."""
     ipr_list = []
@@ -88,7 +85,7 @@ def getGffInfo(gffFile):
     myDict = {}
     for line in gffFile:
 	columns = line.split("\t")
-	if columns[2] == "mRNA":
+	if len(columns)>1 and columns[2] == "mRNA":
 	    mRNA_ID = (columns[8].split(";")[0])[3:]
 	    parentGene = (columns[8].split(";")[1])[7:-1]
 	    myDict[mRNA_ID] = parentGene
