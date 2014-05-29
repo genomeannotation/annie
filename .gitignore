@@ -1,3 +1,4 @@
 *.pyc
 *~
 full_input_files/*
+sample_data/*
