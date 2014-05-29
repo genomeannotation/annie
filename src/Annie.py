@@ -18,7 +18,7 @@ def main(args):
         gffFile = open(args[3], 'r')
 	fastaFile = open(args[4], 'r')
 	fileOutput = open(args[5], 'w')
-	results = read_case2(blastFile, gffFile, fastaFile)
+	results = read_sprot(blastFile, gffFile, fastaFile)
     writeResults(results, fileOutput)
 
     #myFile = open(arg1, 'r')
@@ -36,28 +36,64 @@ def read_ipr(io_buffer):
                              == 0 or ipr_list[i] != ipr_list[i-1]]
     return ipr_list
 
-def read_case2(blastFile, gffFile, fastaFile):
-    return getFastaHeaders(fastaFile)
+def read_sprot(blastFile, gffFile, fastaFile):
+    fastaInfo = getFastaInfo(fastaFile)
+    gffInfo = getGffInfo(gffFile)
+    blastInfo = getBlastInfo(blastFile)
+    sprot_list = []
+    for mRNA in gffInfo:
+	product = fastaInfo[blastInfo[mRNA]][0]
+	geneName = fastaInfo[blastInfo[mRNA]][1]
+	geneID = gffInfo[mRNA]
+	sprot_list.append([geneID, "name", geneName])
+	sprot_list.append([mRNA, "product", product])
+    return sprot_list
 
-def getFastaHeaders(fastaFile):
-    lines = []
+def getFastaInfo(fastaFile):
+    myDict = {}
     for line in fastaFile:
 	if line[0] == '>':
 	    words = line.split(" ")
-            ref = words[0]
+            ref = words[0][1:]
 	    i=0
 	    while words[i].find("OS=") == -1:
 		i += 1
-	    product = words[i-1]
-	    if words[i+1].find("GN=") == -1:
-		name = "UNKNOWN"
+	    product = " ".join(words[1:i])
+	    i=0
+	    while words[i].find("GN=") == -1 and words[i].find("PE=") == -1:
+		i += 1
+	    if not words[i].find("GN=") == -1:
+		j=i
+		while words[j].find("PE=") == -1:
+		    j += 1
+		name = (" ".join(words[i:j]))[3:]		
 	    else:
-		name = words[i+1]
-	    lines.append([ref, product, name])
-    return lines
+		name = "UNNAMED"
+	    myDict[ref] = (product,name)
+    return myDict
+
+def getBlastInfo(blastFile):
+    myDict = {}
+    for line in blastFile:
+        columns = line.split("\t")
+        mrna = columns[0]
+	ref = columns[1]
+	myDict[mrna] = ref
+    return myDict
+
+def getGffInfo(gffFile):
+    myDict = {}
+    for line in gffFile:
+	columns = line.split("\t")
+	if columns[2] == "mRNA":
+	    mRNA_ID = (columns[8].split(";")[0])[3:]
+	    parentGene = (columns[8].split(";")[1])[7:-1]
+	    myDict[mRNA_ID] = parentGene
+    return myDict
+
 
 def writeResults(results, fileOut):
     for line in results:
-        fileOut.write(" ".join(line)+"\n")
+        fileOut.write("\t".join(line)+"\n")
 
 main(sys.argv)

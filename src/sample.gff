@@ -1,0 +1,12 @@
+comp9975_c0_seq1	.	gene	25	603	.	+	.	ID=g.4830;Name=ORF%20g.4830%20m.4830%20type%3Acomplete%20len%3A193%20%28%2B%29
+comp9975_c0_seq1	.	mRNA	25	603	.	+	.	ID=m.4830;Parent=g.4830
+comp9975_c0_seq1	.	CDS	25	603	.	+	.	ID=cds.m.4830;Parent=m.4830
+comp9975_c1_seq1	.	gene	3	533	.	+	.	ID=g.4831;Name=ORF%20g.4831%20m.4831%20type%3Ainternal%20len%3A176%20%28%2B%29
+comp9975_c1_seq1	.	mRNA	3	533	.	+	.	ID=m.4831;Parent=g.4831
+comp9975_c1_seq1	.	CDS	3	533	.	+	.	ID=cds.m.4831;Parent=m.4831
+comp9982_c0_seq1	.	gene	1	441	.	-	.	ID=g.4837;Name=ORF%20g.4837%20m.4837%20type%3Ainternal%20len%3A147%20%28-%29
+comp9982_c0_seq1	.	mRNA	1	441	.	-	.	ID=m.4837;Parent=g.4837
+comp9982_c0_seq1	.	CDS	1	441	.	-	.	ID=cds.m.4837;Parent=m.4837
+comp9983_c0_seq1	.	gene	1746	2060	.	+	.	ID=g.4838;Name=ORF%20g.4838%20m.4838%20type%3A3prime_partial%20len%3A104%20%28%2B%29
+comp9983_c0_seq1	.	mRNA	1746	2060	.	+	.	ID=m.4838;Parent=g.4838
+comp9983_c0_seq1	.	CDS	1746	2060	.	+	.	ID=cds.m.4838;Parent=m.4838
