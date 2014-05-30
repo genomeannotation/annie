@@ -22,12 +22,12 @@ def main(args):
     elif case == "sprot":
         blast_file = open(args[2], 'r')
         gff_file = open(args[3], 'r')
-	fasta_file = open(args[4], 'r')
-	file_output = open(args[5], 'w')
-	annotations = read_sprot(blast_file, gff_file, fasta_file)
+        fasta_file = open(args[4], 'r')
+        file_output = open(args[5], 'w')
+        annotations = read_sprot(blast_file, gff_file, fasta_file)
     else:
-	print "That case is not yet supported"
-	exit()
+        print("That case is not yet supported")
+        exit()
     write_annotations(annotations, file_output)
 
 
