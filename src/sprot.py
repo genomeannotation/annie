@@ -9,7 +9,7 @@ def read_sprot(blast_file, gff_file, fasta_file):
     gff_info = get_gff_info(gff_file)
     blast_info = get_blast_info(blast_file)
     sprot_list = []
-    for mrna, dbxref in blast_info.iteritems():
+    for mrna, dbxref in blast_info.items():
         if dbxref not in fasta_info:
             print(mrna+" has dbxref "+dbxref+" that's not in the fasta. Skipping...")
             continue
