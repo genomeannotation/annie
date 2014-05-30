@@ -2,9 +2,9 @@
 
 import unittest
 import io
-from src.annotation_extractor import *
+from src.ipr import read_ipr
 
-class TestAnnotationExtractor(unittest.TestCase):
+class TestIPR(unittest.TestCase):
 
     def setUp(self):
         self.ipr_file = io.StringIO(\
@@ -25,7 +25,7 @@ class TestAnnotationExtractor(unittest.TestCase):
 ##########################
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestAnnotationExtractor))
+    suite.addTest(unittest.makeSuite(TestIPR))
     return suite
 
 if __name__ == '__main__':

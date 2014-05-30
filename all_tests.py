@@ -2,11 +2,11 @@
 
 # import all the lovely files
 import unittest
-import test.annotation_extractor_tests
+import test.ipr_tests
 
 # get suites from test modules
 suites = [
-test.annotation_extractor_tests.suite(),\
+test.ipr_tests.suite(),\
 ]
 
 # collect suites in a TestSuite object
