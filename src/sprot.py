@@ -42,7 +42,7 @@ def get_fasta_info(fasta_file):
                     j += 1
                 name = (" ".join(words[i:j]))[3:]               
             else:
-                name = "UNNAMED"
+                name = ref.split("|")[2].split("_")[0]
             dbxrefs[ref] = (product,name)
     return dbxrefs
 
@@ -61,7 +61,7 @@ def get_gff_info(gff_file):
         columns = line.split("\t")
         if len(columns)>1 and columns[2] == "mRNA":
             mrna_id = (columns[8].split(";")[0])[3:]
-            parent_gene = (columns[8].split(";")[1])[7:-1]
+            parent_gene = (columns[8].strip().split(";")[1])[7:]
             mrna_genes[mrna_id] = parent_gene
     return mrna_genes
 
