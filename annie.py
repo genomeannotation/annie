@@ -16,17 +16,34 @@ from src.annotation import write_annotations
 def main(args):
     case = args[1]
     if case == "ipr":
-        ipr_file = open(args[2], 'r')
-        file_output = open(args[3], 'w')
+        if len(args) != 4:
+            print("Annie wants to remind you that you should have 3 command-line arguments for ipr. You entered too many or too little")
+            exit()
+        try:
+            ipr_file = open(args[2], 'r')
+            file_output = open(args[3], 'w')
+        except IOError:
+            print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
+            exit()
         annotations = read_ipr(ipr_file)
     elif case == "sprot":
-        blast_file = open(args[2], 'r')
-        gff_file = open(args[3], 'r')
-        fasta_file = open(args[4], 'r')
-        file_output = open(args[5], 'w')
+        if len(args) != 6:
+            print("Annie wants to remind you that you should have 5 command-line arguments for sprot. You entered too many or too little")
+            exit()
+        try:
+            blast_file = open(args[2], 'r')
+            gff_file = open(args[3], 'r')
+            fasta_file = open(args[4], 'r')
+            file_output = open(args[5], 'w')
+        except IOError:
+            print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
+            exit()
         annotations = read_sprot(blast_file, gff_file, fasta_file)
+    elif case == "help":
+        print("Here are the allowed inputs for Annie:\n\tipr <ipr_file_name> <output_file_name>\n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
+        exit()
     else:
-        print("That case is not yet supported")
+        print("Sorry, Annie says that case is not yet supported. Please double check your first command-line argument.")
         exit()
     write_annotations(annotations, file_output)
 

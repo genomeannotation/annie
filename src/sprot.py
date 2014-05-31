@@ -33,14 +33,10 @@ def get_fasta_info(fasta_file):
             while words[i].find("OS=") == -1:
                 i += 1
             product = " ".join(words[1:i])
-            i=0
             while words[i].find("GN=") == -1 and words[i].find("PE=") == -1:
                 i += 1
             if not words[i].find("GN=") == -1:
-                j=i
-                while words[j].find("PE=") == -1:
-                    j += 1
-                name = (" ".join(words[i:j]))[3:]               
+                name = words[i][3:]               
             else:
                 name = ref.split("|")[2].split("_")[0]
             dbxrefs[ref] = (product,name)
