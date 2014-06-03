@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import sys
-from collections import namedtuple
-
-Annotation = namedtuple('Annotation', 'feature_id key value')
+from src.annotation import Annotation
 
 def read_ipr(io_buffer, whitelist=None):
     """Returns a list of lists, each containing mrna_id, "Dbxref" and annotation."""

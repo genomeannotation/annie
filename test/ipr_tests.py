@@ -16,10 +16,10 @@ class TestIPR(unittest.TestCase):
         self.assertEquals(2, len(ipr_list))
         first_entry = ipr_list[0]
         second_entry = ipr_list[1]
-        mrna_ids = [first_entry[0], second_entry[0]]
+        mrna_ids = [first_entry.feature_id, second_entry.feature_id]
         self.assertTrue("m.98281" in mrna_ids)
-        self.assertEquals("Dbxref", first_entry[1])
-        dbxrefs = [first_entry[2], second_entry[2]]
+        self.assertEquals("Dbxref", first_entry.key)
+        dbxrefs = [first_entry.value, second_entry.value]
         self.assertTrue("SUPERFAMILY:SSF48726" in dbxrefs)
 
 

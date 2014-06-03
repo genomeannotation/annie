@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import sys
-from collections import namedtuple
-
-Annotation = namedtuple('Annotation', 'feature_id key value')
+from src.annotation import Annotation
 
 def read_sprot(blast_file, gff_file, fasta_file):
     fasta_info = get_fasta_info(fasta_file)
