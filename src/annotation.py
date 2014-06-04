@@ -15,10 +15,24 @@ class Annotation:
             return True
         return False
 
+    def __ne__(self, other):
+        return not self == other
+
     def __lt__(self, other):
         if self.feature_id < other.feature_id:
             return True
-        return False
+        elif self.feature_id == other.feature_id:
+            if self.key < other.key:
+                return True
+            elif self.key == other.key:
+                if self.value < other.value:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 
 def write_annotations(annotations, file_out):
     # First, resolve duplicate gene names

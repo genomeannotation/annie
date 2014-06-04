@@ -25,7 +25,7 @@ def main(args):
         except IOError:
             print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
             exit()
-        whitelist = [word.strip().lower() for word in open("config/dbxref_whitelist",'r').readlines()]
+        whitelist = [word.strip().lower() for word in open("../config/dbxref_whitelist",'r').readlines()]
         annotations = read_ipr(ipr_file, whitelist)
     elif case == "sprot":
         if len(args) != 6:

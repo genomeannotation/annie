@@ -7,10 +7,11 @@ def read_ipr(io_buffer, whitelist=None):
     ipr_list = []
     for line in io_buffer:
         columns = line.split("\t")
-        if len(columns)>1 and (columns[3].strip().lower() in whitelist):
-             ipr_list.append(Annotation(columns[0], "Dbxref", columns[3]+":"+columns[4]))
+        if len(columns)>3 and (columns[3].strip().lower() in whitelist):
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[3].strip()+":"+columns[4].strip()))
+            if len(columns)>13 and columns[13].find("GO:") != -1:
+                ipr_list.append(Annotation(columns[0].strip(), "GO", columns[13].strip()))
     ipr_list = sorted(ipr_list)
-    ipr_list = [ipr_list[i] for i in range(len(ipr_list)) if i
-                             == 0 or ipr_list[i] != ipr_list[i-1]]
+    ipr_list = [ipr_list[i] for i in range(len(ipr_list)) if i== 0 or ipr_list[i] != ipr_list[i-1]]
     return ipr_list
-    
+

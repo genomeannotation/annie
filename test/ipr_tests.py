@@ -13,14 +13,20 @@ class TestIPR(unittest.TestCase):
     def test_read_ipr(self):
         whitelist = ["superfamily", "prositeprofiles"]
         ipr_list = read_ipr(self.ipr_file, whitelist)
-        self.assertEquals(2, len(ipr_list))
+        self.assertEquals(3, len(ipr_list))
         first_entry = ipr_list[0]
         second_entry = ipr_list[1]
-        mrna_ids = [first_entry.feature_id, second_entry.feature_id]
+        third_entry = ipr_list[2]
+        mrna_ids = [first_entry.feature_id, second_entry.feature_id, third_entry.feature_id]
+        keys = [first_entry.key, second_entry.key, third_entry.key]
         self.assertTrue("m.98281" in mrna_ids)
-        self.assertEquals("Dbxref", first_entry.key)
-        dbxrefs = [first_entry.value, second_entry.value]
-        self.assertTrue("SUPERFAMILY:SSF48726" in dbxrefs)
+        self.assertTrue("Dbxref" in keys)
+        self.assertTrue("GO" in keys)
+        values = [first_entry.value, second_entry.value, third_entry.value]
+        print(values)
+        self.assertTrue("SUPERFAMILY:SSF48726" in values)
+        self.assertTrue("GO:0005515" in values)
+
 
 
 ##########################
