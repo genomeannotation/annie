@@ -27,6 +27,7 @@ def main(args):
             exit()
         whitelist = [word.strip().lower() for word in open("../config/dbxref_whitelist",'r').readlines()]
         annotations = read_ipr(ipr_file, whitelist)
+        ipr_file.close()
     elif case == "sprot":
         if len(args) != 6:
             print("Annie wants to remind you that you should have 5 command-line arguments for sprot. You entered too many or too little")
@@ -40,6 +41,9 @@ def main(args):
             print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
             exit()
         annotations = read_sprot(blast_file, gff_file, fasta_file)
+        blast_file.close()
+        gff_file.close()
+        fasta_file.close()
     elif case == "help":
         print("Here are the allowed inputs for Annie:\n\tipr <ipr_file_name> <output_file_name>\n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
         exit()
@@ -47,6 +51,7 @@ def main(args):
         print("Sorry, Annie says that case is not yet supported. Please double check your first command-line argument.")
         exit()
     write_annotations(annotations, file_output)
+    file_output.close()
 
 
 
