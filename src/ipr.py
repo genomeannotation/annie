@@ -8,7 +8,7 @@ def read_ipr(io_buffer, whitelist=None):
     for line in io_buffer:
         columns = line.split("\t")
         if len(columns)>3 and (columns[3].strip().lower() in whitelist):
-            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[3].strip()+":"+columns[4].strip()))
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[3].strip().upper()+":"+columns[4].strip()))
             if len(columns)>13 and columns[13].find("GO:") != -1:
                 ipr_list.append(Annotation(columns[0].strip(), "GO", columns[13].strip()))
             if len(columns)>11 and columns[11].find("IPR") != -1:

@@ -8,7 +8,7 @@ class TestIPR(unittest.TestCase):
 
     def setUp(self):
         self.ipr_file = io.StringIO(\
-        'm.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tSUPERFAMILY\tSSF48726\t5997\t6096\t6.42E-13\tT\t04-04-2014\n\
+        'm.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tSuperFamily\tSSF48726\t5997\t6096\t6.42E-13\tT\t04-04-2014\n\
 m.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tProSiteProfiles\tPS50835\tIg-like domain profile.\t6294\t6382\t12.15\tT\t04-04-2014\tIPR007110\tImmunoglobulin-like domain\tGO:0005515\n\
 m.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tProSiteProfiles\tPS50835\tFibronectin type-III domain profile.\t2548\t2639\t21.089\tT\t04-04-2014\tIPR003961\tFibronectin, type III\tGO:0005515\n')
 
