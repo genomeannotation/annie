@@ -7,7 +7,7 @@ from src.ipr import read_ipr
 class TestAnnotation(unittest.TestCase):
 
 
-    def test_write_annotations(self):
+    def test_write_annotations(self): #this function is pretty trivial
        pass
 
 

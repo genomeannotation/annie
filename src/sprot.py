@@ -2,44 +2,61 @@
 import sys
 from src.annotation import Annotation
 
+#this functions takes an ipr file and returns a list of annotations. 2 types of annotations are retrieved based on the following keys: "name" and "product"
 def read_sprot(blast_file, gff_file, fasta_file):
+    #retrieve relevant information from files
     fasta_info = get_fasta_info(fasta_file)
     gff_info = get_gff_info(gff_file)
     blast_info = get_blast_info(blast_file)
+
     sprot_list = []
-    for mrna, dbxref in blast_info.items():
-        if dbxref not in fasta_info:
+    for mrna, dbxref in blast_info.items(): #blast_info maps mrna's to dbxrefs
+        if dbxref not in fasta_info: #these two if's shouldn't occur but just in case...
             print(mrna+" has dbxref "+dbxref+" that's not in the fasta. Skipping...")
             continue
         if mrna not in gff_info:
             print( mrna+" not in gff. Skipping...")
             continue
-        product = fasta_info[dbxref][0]
+
+        #fasta_info maps dbxrefs to products and names
+        product = fasta_info[dbxref][0] 
         gene_name = fasta_info[dbxref][1]
+        #gff_info maps mrna's to the parent gene id's
         gene_id = gff_info[mrna]
+
+        #add annotations to annotation list
         sprot_list.append(Annotation(gene_id, "name", gene_name))
         sprot_list.append(Annotation(mrna, "product", product))
     return sprot_list
 
+#this function reads a fasta file and returns a dictionary mapping dbxrefs to the 2-tuple (product, gene name)
 def get_fasta_info(fasta_file):
     dbxrefs = {}
     for line in fasta_file:
-        if line[0] == '>':
-            words = line.split(" ")
-            ref = words[0][1:]
+        if line[0] == '>': #if we have a header line
+
+            words = line.split(" ") #we break the line by spaces to get "words"
+
+            ref = words[0][1:] #we are assuming the first "word" is the dbxref with no spaces. the "[1:]" is to get rid of the starting '>'
+
+            
             i=0
-            while words[i].find("OS=") == -1:
+            #loop through the words till we find "OS=" (which we assume exists). We are assuming all the words between here and the ref is the product.
+            while words[i].find("OS=") == -1: 
                 i += 1
             product = " ".join(words[1:i])
+            #loop through the words till we find "GN=" or "PE=". We are assuming "PE=" comes immediately after "GN=" so if we hit "PE=" first, then the gene name doesn't exist. We also assume the gene name is one word
             while words[i].find("GN=") == -1 and words[i].find("PE=") == -1:
                 i += 1
-            if not words[i].find("GN=") == -1:
-                name = words[i][3:]               
-            else:
+            if not words[i].find("GN=") == -1: #if gene name exists
+                name = words[i][3:] #the "[3:]" is to get rid of the "GN=" in the beginning
+            else: #if gene name doesn't exist, use part of the dbxref for the name
                 name = ref.split("|")[2].split("_")[0]
+            #add to dictionary
             dbxrefs[ref] = (product,name)
     return dbxrefs
 
+#this function reads a blast file and returns a dictionary mapping mrna's to dbxrefs. This function assumes the file is tab-separated and has mrna in the 0th and dbxref in the 1st column
 def get_blast_info(blast_file):
     mrna_dbxrefs = {}
     for line in blast_file:
@@ -49,13 +66,15 @@ def get_blast_info(blast_file):
         mrna_dbxrefs[mrna] = ref
     return mrna_dbxrefs
 
+#this function reads a gff file and returns a dictionary mapping mrna id's to its parent gene id
 def get_gff_info(gff_file):
     mrna_genes = {}
     for line in gff_file:
         columns = line.split("\t")
-        if len(columns)>1 and columns[2] == "mRNA":
-            mrna_id = (columns[8].split(";")[0])[3:]
-            parent_gene = (columns[8].strip().split(";")[1])[7:]
+        if len(columns)>1 and columns[2] == "mRNA": #if this is an "mRNA row"
+            #we assume in the info we want is in the 8th column and is in the form "ID=m.XXXX;Parent=g.XXXX" in the file
+            mrna_id = (columns[8].split(";")[0])[3:] #the "[3:]" is to get rid of the "ID="
+            parent_gene = (columns[8].strip().split(";")[1])[7:] #the "[7:]" is to get rid of the "Parent="
             mrna_genes[mrna_id] = parent_gene
     return mrna_genes
 

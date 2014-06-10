@@ -14,9 +14,15 @@ from src.annotation import write_annotations
     # sprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>
 
 def main(args):
+    #in the case that the user doesn't give any command-line arguments
+    if len(args) == 1:
+	print("Sorry, Annie.py can't be run without additional command-line arguments. Type \"python annie.py help\" for more information.")
+	exit()
+
+    #check which case the user is doing: ipr, sprot, etc
     case = args[1]
-    if case == "ipr":
-        if len(args) != 4:
+    if case == "ipr": # if ipr case
+        if len(args) != 4: #if wrong number of command-line args
             print("Annie wants to remind you that you should have 3 command-line arguments for ipr. You entered too many or too little")
             exit()
         try:
@@ -25,11 +31,11 @@ def main(args):
         except IOError:
             print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
             exit()
-        whitelist = [word.strip().lower() for word in open("config/dbxref_whitelist",'r').readlines()]
+        whitelist = [word.strip().lower() for word in open("config/dbxref_whitelist",'r').readlines()] #obtain whitelist and get rid of lowercase and whitespace padding
         annotations = read_ipr(ipr_file, whitelist)
         ipr_file.close()
-    elif case == "sprot":
-        if len(args) != 6:
+    elif case == "sprot": #if sprot case
+        if len(args) != 6: #if wrong number of command-line args
             print("Annie wants to remind you that you should have 5 command-line arguments for sprot. You entered too many or too little")
             exit()
         try:
@@ -44,12 +50,16 @@ def main(args):
         blast_file.close()
         gff_file.close()
         fasta_file.close()
-    elif case == "help":
-        print("Here are the allowed inputs for Annie:\n\tipr <ipr_file_name> <output_file_name>\n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
+    elif case == "help": #if help case
+        print("Here are the allowed inputs for Annie:\
+		\n\tipr <ipr_file_name> <output_file_name>\
+		\n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
         exit()
-    else:
+    else: #if invalid case
         print("Sorry, Annie says that case is not yet supported. Please double check your first command-line argument.")
         exit()
+
+    #write the annotations to file and close
     write_annotations(annotations, file_output)
     file_output.close()
 
