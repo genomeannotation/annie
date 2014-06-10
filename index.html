@@ -39,14 +39,26 @@
 <h3>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h3>
 
+<p>annie is released under the <a href="http://opensource.org/licenses/MIT">MIT License</a></p>
+
 <h3>
 <a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h3>
+
+<p>The purpose of annie is relatively simple. annie takes your input files (blastout, fasta, gff, etc), does the appropriate cross-referencing for you, and spits out a file that contains the appropriate annotations written in a 3-column table format.</p>
 
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
+<p>annie is written in the beautiful language of <a href="https://www.python.org/download/releases/2.7.6/">Python 2</a> . If you have Python 2 (not 3!) installed on your computer, you can download the zipped source code link at the top of the page and extract it. That's it!</p>
+
 <h3>
 <a name="citing-annie" class="anchor" href="#citing-annie"><span class="octicon octicon-link"></span></a>Citing annie</h3>
+
+<p>If you'd like to flatter us, please cite us as follows:</p>
+
+<blockquote>
+<p>Tate, R., Hall, B., DeRego, T., &amp; Geib, S. (2014). annie: the ANNotation Information Extractor (Version 1.0) [Software]. Available from <a href="http://genomeannotation.github.io/annie">http://genomeannotation.github.io/annie</a>.</p>
+</blockquote>
 
 <h1>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
@@ -54,10 +66,71 @@
 <h3>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h3>
 
+<p>First, open up your command prompt/terminal traverse your directories until your reach the annie directory (wherever you decided to extract it on your computer). Once there, you will want to run a command in the following form:</p>
+
+<p><code>python annie.py &lt;case&gt; &lt;input_file1&gt; [&lt;input_file2&gt; ...] &lt;output_file&gt;</code></p>
+
+<p>Currently, Annie works with two cases: ipr and sprot. More information about the inputFile and outputFile fields are outlined below.</p>
+
+<p>If you ever get lost and want to know what the valid inputs for annie are just type:
+<code>python annie.py help</code>
+and help will be on the way shortly.</p>
+
 <h3>
 <a name="ipr" class="anchor" href="#ipr"><span class="octicon octicon-link"></span></a>ipr</h3>
 
-<h3>
+<p>For ipr, the command has the following form:</p>
+
+<p><code>python annie.py ipr &lt;ipr_input_file&gt; &lt;output_file&gt;</code></p>
+
+<p>So an example of what an actual command might look like would be:</p>
+
+<p><code>python annie.py ipr my_ipr_file.ipr my_super_secret_output_file.txt</code></p>
+
+<p>The output file name can be whatever you want it to be, that's your chance to be creative!</p>
+
+<p>The output file is a table of annotations. For each row in the ipr file, it contains the mrna id and the dbxref. It also contains the GO and IPR values if they exist. For each row, we create up to 3 annotations where the feature id is the mrna id, and the keys are "dbxref", "IPR" and "GO" with their respective values. Here is a sample input/output pair:</p>
+
+<p>Input:</p>
+
+<p><code>m.98281    c95b0824ccd627403aa63f9e474649cc    7571    Pfam    PF00041 Fibronectin type III domain 3729    3812    4.7E-14 T   04-04-2014  IPR003961   Fibronectin, type III   GO:0005515</code> </p>
+
+<p><code>m.98281    c95b0824ccd627403aa63f9e474649cc    7571    Pfam    PF00041 Fibronectin type III domain 6484    6567    1.8E-12 T   04-04-2014  IPR003961   Fibronectin, type III   GO:0005515</code></p>
+
+<p><code>m.42655    de17ff06d901d22dacc3f5c91510f33f    288 Pfam    PF12171 Zinc-finger double-stranded RNA-binding 45  69  1.3E-5  T   05-04-2014  IPR022755   Zinc finger, double-stranded RNA binding</code>   </p>
+
+<p><code>m.82734    ae22a6fcc80b2ac982378f16ac022b3d    144 Pfam    PF14846 Domain of unknown function (DUF4485)    8   89  4.8E-17 T   05-04-2014  IPR027831   Domain of unknown function DUF4485</code></p>
+
+<p>Output:</p>
+
+<p><code>m.42655    Dbxref  PFAM:PF12171</code></p>
+
+<p><code>m.42655    InterPro    IPR022755</code></p>
+
+<p><code>m.82734    Dbxref  PFAM:PF14846</code></p>
+
+<p><code>m.82734    InterPro    IPR027831</code></p>
+
+<p><code>m.98281    Dbxref  PFAM:PF00041</code></p>
+
+<p><code>m.98281    GO  GO:0005515</code></p>
+
+<p><code>m.98281    InterPro    IPR003961</code></p>
+
+<p>A few notes on the sample input/output:</p>
+
+<ul>
+<li>The GO annotation doesn't appear for every mrna because not every mrna has one.</li>
+<li>Notice that the mrna, dbxref, GO, and IPR values for the first two entries in the input are the same so they result in the same annotations. Knowing that nobody has time for duplicate annotations, annie automatically removes them for you.</li>
+</ul><p>Annie makes a few assumptions about your input files so if something doesn't work, check to see if your file meets these assumptions:</p>
+
+<ul>
+<li>values in each row are tab-separated</li>
+<li>the first column is the mrna id</li>
+<li>the 4th and 5th columns correspond to your dbxref</li>
+<li>the 12th column is the IPR column if the 12th column exists</li>
+<li>the 14th column is the GO column if the 14th column exists</li>
+</ul><h3>
 <a name="sprot" class="anchor" href="#sprot"><span class="octicon octicon-link"></span></a>sprot</h3>
 
 <h1>
