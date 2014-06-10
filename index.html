@@ -87,7 +87,7 @@ and help will be on the way shortly.</p>
 
 <p><code>python annie.py ipr my_ipr_file.ipr my_super_secret_output_file.txt</code></p>
 
-<p>The output file name can be whatever you want it to be, that's your chance to be creative!</p>
+<p>The output file name can be whatever you want it to be, that's your chance to be creative! Another thing to note is that the file extensions don't matter for either the input and output files. For example, your ipr file could have an extension <code>.animu</code> and everything would work just fine.</p>
 
 <p>The output file is a table of annotations. For each row in the ipr file, it contains the mrna id and the dbxref. It also contains the GO and IPR values if they exist. For each row, we create up to 3 annotations where the feature id is the mrna id, and the keys are "dbxref", "IPR" and "GO" with their respective values. Here is a sample input/output pair:</p>
 
@@ -122,6 +122,7 @@ and help will be on the way shortly.</p>
 <ul>
 <li>The GO annotation doesn't appear for every mrna because not every mrna has one.</li>
 <li>Notice that the mrna, dbxref, GO, and IPR values for the first two entries in the input are the same so they result in the same annotations. Knowing that nobody has time for duplicate annotations, annie automatically removes them for you.</li>
+<li>The output has the annotations <em>ordered</em>. In other words, it first sorts by the feature id (the mrna id), then by the key (e.g. "Dbxref", "GO", "InterPro"), then by the value.</li>
 </ul><p>Annie makes a few assumptions about your input files so if something doesn't work, check to see if your file meets these assumptions:</p>
 
 <ul>
@@ -133,11 +134,136 @@ and help will be on the way shortly.</p>
 </ul><h3>
 <a name="sprot" class="anchor" href="#sprot"><span class="octicon octicon-link"></span></a>sprot</h3>
 
-<h1>
+<p>For sprot, the command has the following form, it's a bit longer compared to ipr:</p>
+
+<p><code>python annie.py sprot &lt;blastout_file_name&gt; &lt;gff_file_name&gt; &lt;fasta_file_name&gt; &lt;output_file_name&gt;</code></p>
+
+<p>So essentially, we take three input files (blast, gff, and fasta). So an example of what an actual command might look like would be:</p>
+
+<p><code>python annie.py sprot my_blast_file.blast my_gff_file.gff my_fasta_file.fasta my_results.txt</code></p>
+
+<p>Once again, the output file can be named anything you want. Another thing to note is that the file extensions don't matter for either the input and output files. For example, your gff file could have an extension <code>.velociraptor</code> and everything would work just fine.</p>
+
+<p>The output file is a table of annotations just like the ipr case. The sprot case is a bit more complicated so we'll go through the details before moving on to the sample input/output. First of all, the main goal is to write annotations for all the mrna's in the blastout file. Secondly, for each of those mrna's, we want to write annotations for their corresponding parent gene. </p>
+
+<p>The sprot case returns two types of annotations. The first is a product annotation in the form <code>&lt;mrna_id&gt; product &lt;product&gt;</code>. We use the blast file to get the dbxref for the associated mrna and then we use the fasta file to take that dbxref and get the corresponding product. Here is a diagram of what goes on:</p>
+
+<p><code>mrna_id ---blast_file---&gt; dbxref ---fasta_file---&gt; product</code></p>
+
+<p>Next, we have the name annotation. The name annotation has the form <code>&lt;parent_gene_id&gt; name &lt;parent_gene_name&gt;</code>. First, for each mrna in the blast results, we look it up in the gff file to get the corresponding parent gene id. That is how we obtain the <code>&lt;parent_gene_id&gt;</code> portion of the annotation. The process to obtain the <code>&lt;parent_gene_name&gt;</code> is similar to getting the product for the product annotation. First, we use the blast file to get the associated dbxref from the mrna and then we use the fasta file to take that dbxref ref and give us the gene name. Here is a diagram of how the name annotation is made:</p>
+
+<p><code>mrna_id ---gff_file---&gt; parent_gene_id</code></p>
+
+<p><code>mrna_id ---blast_file---&gt; dbxref ---fasta_file---&gt; parent_gene_name</code></p>
+
+<p>Now that we understand what this case is doing, let's take a look at some sample input/output:</p>
+
+<h5>
+<a name="input" class="anchor" href="#input"><span class="octicon octicon-link"></span></a>Input</h5>
+
+<h6>
+<a name="blast-file" class="anchor" href="#blast-file"><span class="octicon octicon-link"></span></a>blast file</h6>
+
+<p><code>m.4830 sp|Q5AZY1|MRH4_EMENI    32.65   49  33  0   114 162 500 548 0.56    34.3</code></p>
+
+<p><code>m.4831 sp|Q9TTC1|POL_KORV  32.26   155 102 3   23  174 807 961 1e-16   81.6</code></p>
+
+<p><code>m.4837 sp|P05892|GAG_SIVVT 45.24   42  21  2   35  75  394 434 0.012   38.1</code></p>
+
+<p><code>m.4838 sp|Q9UGP4|LIMD1_HUMAN   29.58   71  42  3   32  96  369 437 0.88    31.6</code></p>
+
+<h6>
+<a name="gff-file" class="anchor" href="#gff-file"><span class="octicon octicon-link"></span></a>gff file</h6>
+
+<p><code>comp9975_c0_seq1   .   gene    25  603 .   +   .   ID=g.4830;Name=ORF%20g.4830%20m.4830%20type%3Acomplete%20len%3A193%20%28%2B%29</code></p>
+
+<p><code>comp9975_c0_seq1   .   mRNA    25  603 .   +   .   ID=m.4830;Parent=g.4830</code></p>
+
+<p><code>comp9975_c0_seq1   .   CDS 25  603 .   +   .   ID=cds.m.4830;Parent=m.4830</code></p>
+
+<p><code>comp9975_c1_seq1   .   gene    3   533 .   +   .   ID=g.4831;Name=ORF%20g.4831%20m.4831%20type%3Ainternal%20len%3A176%20%28%2B%29</code></p>
+
+<p><code>comp9975_c1_seq1   .   mRNA    3   533 .   +   .   ID=m.4831;Parent=g.4831</code></p>
+
+<p><code>comp9975_c1_seq1   .   CDS 3   533 .   +   .   ID=cds.m.4831;Parent=m.4831</code></p>
+
+<p><code>comp9982_c0_seq1   .   gene    1   441 .   -   .   ID=g.4837;Name=ORF%20g.4837%20m.4837%20type%3Ainternal%20len%3A147%20%28-%29</code></p>
+
+<p><code>comp9982_c0_seq1   .   mRNA    1   441 .   -   .   ID=m.4837;Parent=g.4837</code></p>
+
+<p><code>comp9982_c0_seq1   .   CDS 1   441 .   -   .   ID=cds.m.4837;Parent=m.4837</code></p>
+
+<p><code>comp9983_c0_seq1   .   gene    1746    2060    .   +   .   ID=g.4838;Name=ORF%20g.4838%20m.4838%20type%3A3prime_partial%20len%3A104%20%28%2B%29</code></p>
+
+<p><code>comp9983_c0_seq1   .   mRNA    1746    2060    .   +   .   ID=m.4838;Parent=g.4838</code></p>
+
+<p><code>comp9983_c0_seq1   .   CDS 1746    2060    .   +   .   ID=cds.m.4838;Parent=m.4838</code></p>
+
+<h6>
+<a name="fasta-file" class="anchor" href="#fasta-file"><span class="octicon octicon-link"></span></a>fasta file</h6>
+
+<p>(we removed the sequences for readability of this example)</p>
+
+<p><code>&gt;sp|Q5AZY1|MRH4_EMENI ATP-dependent RNA helicase mrh4, mitochondrial OS=Emericella nidulans (strain FGSC A4 / ATCC 38163 / CBS 112.46 / NRRL 194 / M139) GN=mrh4 PE=3 SV=1</code></p>
+
+<p><code>&gt;sp|Q9TTC1|POL_KORV Pro-Pol polyprotein OS=Koala retrovirus GN=pro-pol PE=3 SV=1</code></p>
+
+<p><code>&gt;sp|P05892|GAG_SIVVT Gag polyprotein OS=Simian immunodeficiency virus agm.vervet (isolate AGM TYO-1) GN=gag PE=3 SV=1</code></p>
+
+<p><code>&gt;sp|Q9UGP4|LIMD1_HUMAN LIM domain-containing protein 1 OS=Homo sapiens PE=1 SV=1</code></p>
+
+<h5>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>Output</h5>
+
+<p><code>g.4838 name    LIMD1</code></p>
+
+<p><code>m.4838 product LIM domain-containing protein 1</code></p>
+
+<p><code>g.4830 name    mrh4</code></p>
+
+<p><code>m.4830 product ATP-dependent RNA helicase mrh4, mitochondrial</code></p>
+
+<p><code>g.4831 name    pro-pol</code></p>
+
+<p><code>m.4831 product Pro-Pol polyprotein</code></p>
+
+<p><code>g.4837 name    gag</code></p>
+
+<p><code>m.4837 product Gag polyprotein</code></p>
+
+<p>A few notes on the sample input/output:</p>
+
+<ul>
+<li>Not every gene id has an associated gene name. In that case, we use part of the dbxref to name it (the part after the second '|' and from that part, the part before the first '_').</li>
+<li>Although not seen here, if two name annotations have the same value (i.e. the same parent gene name), we index them by adding a "_0" in front of the first one, a "_1" in front of the second one, etc.</li>
+<li>Although not seen here, if annie fails to cross-reference something, it'll skip doing that annotation and gently notify you in the command prompt/terminal.</li>
+</ul><p>Annie makes a few assumptions about your input files so if something doesn't work, check to see if your file meets these assumptions:</p>
+
+<ul>
+<li>in the blast file, every row has tab-separated values with the mrna id in the first row and the dbxref in the second row</li>
+<li>in the gff file, every row has tab separated values</li>
+<li>in the gff file, the third column has the feature type ("mRNA", etc). We also assume the third column, if it is for mrna, has exactly the value "mRNA" with no surrounding whitespace or changes in captilization.</li>
+<li>in the gff file, the 9th column should have the mrna id and parent gene id in exactly the following form: <code>ID=&lt;mrna_id&gt;;Parent=&lt;parent_gene_id&gt;</code> so an example would ne <code>ID=m.123;Parent=g.123</code>
+</li>
+<li>in the fasta file, if the line is a header line, the first character is '&gt;'</li>
+<li>in the fasta file, the dbxref is immediately the first thing to appear after the '&gt;' with no whitespace inbetween the '&gt;' and the dbxref</li>
+<li>in the fasta file, the dbxref has no whitespace contained inside</li>
+<li>in the fasta file, the product is everything between the dbxref and the string "OS=" which we assume exists</li>
+<li>in the fasta file, if the gene name exists, it is one word</li>
+<li>in the fasta file, if the gene name exists, it is right before the string "PE=" which we assume exists</li>
+<li>in the fasta file, we assume the gene name is in the following form: <code>GN=&lt;gene_name&gt;</code>. An example would be <code>GN=gag</code>
+</li>
+</ul><h1>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h1>
+
+<p>Currently, annie only has one type of configuration: the whitelist. More information below.</p>
 
 <h3>
 <a name="dbxref-whitelist" class="anchor" href="#dbxref-whitelist"><span class="octicon octicon-link"></span></a>Dbxref Whitelist</h3>
+
+<p>The whitelist is used for the ipr case. If the database type (e.g. 'Pfam') is not in the whitelist, then the annotation won't be written. In other words, annotations are only written for <em>valid</em> databases contained in the whitelist file. annie will convert both the whitelist entry and the ipr file entry to lowercase and trim surrounding whitespace before comparing them against each other, i.e., annie doesn't care about case-sensitivity or whitespace when it comes to the databases names in the ipr file and the whitelist.</p>
+
+<p>To edit the whitelist, go to the Annie directory, then go to the config subdirectory. As of the latest version of annie, there should only be the whitelist file in there. Feel free to delete entries as desired or to add new entries on a new line. Or delete <em>all</em> the entries! Up to you; go wild my friend.</p>
       </section>
     </div>
 
