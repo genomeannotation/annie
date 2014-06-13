@@ -70,24 +70,24 @@
 
 <p><code>python annie.py &lt;case&gt; &lt;input_file1&gt; [&lt;input_file2&gt; ...] &lt;output_file&gt;</code></p>
 
-<p>Currently, Annie works with two cases: ipr and sprot. More information about the inputFile and outputFile fields are outlined below.</p>
+<p>Currently, Annie works with two cases: Results from InterProScan (ipr) and BLAST searching the UniProt SwissProt database (sprot). More information about the inputFile and outputFile fields are outlined below.</p>
 
 <p>If you ever get lost and want to know what the valid inputs for annie are just type:
 <code>python annie.py help</code>
 and help will be on the way shortly.</p>
 
 <h3>
-<a name="ipr" class="anchor" href="#ipr"><span class="octicon octicon-link"></span></a>ipr</h3>
+<a name="InterProScan (ipr)" class="anchor" href="#ipr"><span class="octicon octicon-link"></span></a>ipr</h3>
 
-<p>For ipr, the command has the following form:</p>
+<p>For InterProScan (ipr), the command has the following form:</p>
 
 <p><code>python annie.py ipr &lt;ipr_input_file&gt; &lt;output_file&gt;</code></p>
 
-<p>So an example of what an actual command might look like would be:</p>
+<p>The ipr input file is the tab separate (.tsv) output from InterProScan, make sure you have this format (not xml).   An example of what an actual command might look like would be:</p>
 
-<p><code>python annie.py ipr my_ipr_file.ipr my_super_secret_output_file.txt</code></p>
+<p><code>python annie.py ipr my_ipr_file.tsv my_super_secret_output_file.txt</code></p>
 
-<p>The output file name can be whatever you want it to be, that's your chance to be creative! Another thing to note is that the file extensions don't matter for either the input and output files. For example, your ipr file could have an extension <code>.animu</code> and everything would work just fine.</p>
+<p>The output file name can be whatever you want it to be, that's your chance to be creative! Another thing to note is that the file extensions don't matter for either the input and output files. For example, your ipr file could have an extension <code>.animu</code> and everything would work just fine as long as it actually is the tab-separated output from InterProScan.</p>
 
 <p>The output file is a table of annotations. For each row in the ipr file, it contains the mrna id and the dbxref. It also contains the GO and IPR values if they exist. For each row, we create up to 3 annotations where the feature id is the mrna id, and the keys are "dbxref", "IPR" and "GO" with their respective values. Here is a sample input/output pair:</p>
 
@@ -132,9 +132,9 @@ and help will be on the way shortly.</p>
 <li>the 12th column is the IPR column if the 12th column exists</li>
 <li>the 14th column is the GO column if the 14th column exists</li>
 </ul><h3>
-<a name="sprot" class="anchor" href="#sprot"><span class="octicon octicon-link"></span></a>sprot</h3>
+<a name="sprot" class="anchor" href="#sprot"><span class="octicon octicon-link"></span></a>SwissProt (sprot)</h3>
 
-<p>For sprot, the command has the following form, it's a bit longer compared to ipr:</p>
+<p>For gene names and protein functions from SwissProt (sprot), the command has the following form, it's a bit longer compared to ipr:</p>
 
 <p><code>python annie.py sprot &lt;blastout_file_name&gt; &lt;gff_file_name&gt; &lt;fasta_file_name&gt; &lt;output_file_name&gt;</code></p>
 
