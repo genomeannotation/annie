@@ -138,7 +138,7 @@ and help will be on the way shortly.</p>
 
 <p><code>python annie.py sprot &lt;blastout_file_name&gt; &lt;gff_file_name&gt; &lt;fasta_file_name&gt; &lt;output_file_name&gt;</code></p>
 
-<p>So essentially, we take three input files (blast, gff, and fasta). So an example of what an actual command might look like would be:</p>
+<p>So essentially, we take three input files (blast, gff, and fasta).  To be clear, the blast file should be the blast result file from your search against the SwissProt database.  This output should be in tabular format (blastall -m 8 or blast+ -outfmt 6).  XML or plain text format cannot be read (sorry).  The GFF3 file is the GFF3 file containing your genome (or transcriptome) annotation.  This is so Annie knows what the parent gene is of each mRNA ID (see below for description).  The fasta file is the SwissProt fasta file you performed blast search against.  That big giant file you downloaded <a href="http://www.uniprot.org/downloads">here</a>.  Use the UniProtKB/SwissProt Database, those are manually currated genes.  You can send us an email or spread rumors about annie if you think this is not the best database to use (of course nothing is perfect).     An example of what an actual command might look like would be:</p>
 
 <p><code>python annie.py sprot my_blast_file.blast my_gff_file.gff my_fasta_file.fasta my_results.txt</code></p>
 
