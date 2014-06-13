@@ -44,7 +44,7 @@
 <h3>
 <a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h3>
 
-<p>The purpose of annie is relatively simple. annie takes your input files (blastout, fasta, gff, etc), does the appropriate cross-referencing for you, and spits out a file that contains the appropriate annotations written in a 3-column table format.  Why would I want to create a 3 column table in this format?  To add functional annotations to my genome using the <a href="http://genomeannotation.github.io/GAG/"> Genome Annotation Generator (GAG)</a> of course!</p>
+<p>The purpose of annie is relatively simple. annie takes your input files (blastout, fasta, gff, etc), does the appropriate cross-referencing for you, and spits out a file that contains the appropriate annotations written in a 3-column table format.  Why would I want to create a 3 column table in this format?  To add functional annotations to my genome using the <a href="http://genomeannotation.github.io/GAG/"> Genome Annotation Generator (GAG)</a> or my transcriptome using <a href="https://github.com/genomeannotation/transvestigator">Transvestigator</a> of course!</p>
 
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
@@ -162,7 +162,7 @@ and help will be on the way shortly.</p>
 <a name="input" class="anchor" href="#input"><span class="octicon octicon-link"></span></a>Input</h5>
 
 <h6>
-<a name="blast-file" class="anchor" href="#blast-file"><span class="octicon octicon-link"></span></a>blast file</h6>
+<a name="blast-file" class="anchor" href="#blast-file"><span class="octicon octicon-link"></span></a>blast output tabular file</h6>
 
 <p><code>m.4830 sp|Q5AZY1|MRH4_EMENI    32.65   49  33  0   114 162 500 548 0.56    34.3</code></p>
 
@@ -173,7 +173,7 @@ and help will be on the way shortly.</p>
 <p><code>m.4838 sp|Q9UGP4|LIMD1_HUMAN   29.58   71  42  3   32  96  369 437 0.88    31.6</code></p>
 
 <h6>
-<a name="gff-file" class="anchor" href="#gff-file"><span class="octicon octicon-link"></span></a>gff file</h6>
+<a name="gff-file" class="anchor" href="#gff-file"><span class="octicon octicon-link"></span></a>gff file of your genes/mRNAs</h6>
 
 <p><code>comp9975_c0_seq1   .   gene    25  603 .   +   .   ID=g.4830;Name=ORF%20g.4830%20m.4830%20type%3Acomplete%20len%3A193%20%28%2B%29</code></p>
 
@@ -200,7 +200,7 @@ and help will be on the way shortly.</p>
 <p><code>comp9983_c0_seq1   .   CDS 1746    2060    .   +   .   ID=cds.m.4838;Parent=m.4838</code></p>
 
 <h6>
-<a name="fasta-file" class="anchor" href="#fasta-file"><span class="octicon octicon-link"></span></a>fasta file</h6>
+<a name="fasta-file" class="anchor" href="#fasta-file"><span class="octicon octicon-link"></span></a>SwissProt database in fasta format</h6>
 
 <p>(we removed the sequences for readability of this example)</p>
 
