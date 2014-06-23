@@ -16,8 +16,8 @@ from src.annotation import write_annotations
 def main(args):
     #in the case that the user doesn't give any command-line arguments
     if len(args) == 1:
-	print("Sorry, Annie.py can't be run without additional command-line arguments. Type \"python annie.py help\" for more information.")
-	exit()
+        print("Sorry, Annie.py can't be run without additional command-line arguments. Type \"python annie.py help\" for more information.")
+        exit()
 
     #check which case the user is doing: ipr, sprot, etc
     case = args[1]
@@ -52,8 +52,8 @@ def main(args):
         fasta_file.close()
     elif case == "help": #if help case
         print("Here are the allowed inputs for Annie:\
-		\n\tipr <ipr_file_name> <output_file_name>\
-		\n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
+        \n\tipr <ipr_file_name> <output_file_name>\
+        \n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
         exit()
     else: #if invalid case
         print("Sorry, Annie says that case is not yet supported. Please double check your first command-line argument.")
