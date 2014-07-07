@@ -50,10 +50,31 @@ def main(args):
         blast_file.close()
         gff_file.close()
         fasta_file.close()
+    elif case == "filter":
+        with open(args[2], "r") as annotations_file, open(args[3], "r") as bad_products_file, open(args[4], "w") as outfile:
+            bad_products = []
+            bad_features = []
+            annotations = []
+            # Get bad products
+            for line in bad_products_file:
+                bad_products.append(line.strip())
+            # Find bad features
+            for line in annotations_file:
+                anno = line.strip().split("\t")
+                annotations.append(anno)
+                for product in bad_products:
+                    if anno[1] == "product" and anno[2] == product:
+                        bad_features.append(anno[0])
+            # Write new file
+            for anno in annotations:
+                if anno[0] not in bad_features:
+                    outfile.write("\t".join(anno) + "\n")
+            exit()
     elif case == "help": #if help case
         print("Here are the allowed inputs for Annie:\
         \n\tipr <ipr_file_name> <output_file_name>\
-        \n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>")
+        \n\tsprot <blastout_file_name> <gff_file_name> <fasta_file_name> <output_file_name>\
+        \n\tfilter <annotations_file> <product_blacklist> <output_file_name>")
         exit()
     else: #if invalid case
         print("Sorry, Annie says that case is not yet supported. Please double check your first command-line argument.")
