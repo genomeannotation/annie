@@ -15,7 +15,7 @@ def read_ipr(io_buffer, whitelist=None):
         if len(columns)>13 and columns[13].find("GO:") != -1: #if column exists (we don't care about the whitelist for GO annotations)
             ipr_list.append(Annotation(columns[0].strip(), "GO", columns[13].strip()))
         if len(columns)>11 and columns[11].find("IPR") != -1: #if column exists (we don't care about the whitelist for IPR annotations)
-            ipr_list.append(Annotation(columns[0].strip(), "InterPro", columns[11].strip()))
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[11].strip()))
 
     #this alg removes duplicates
     ipr_list = sorted(ipr_list)

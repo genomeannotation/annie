@@ -22,7 +22,6 @@ m.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tProSiteProfiles\tPS50835\tFibro
         self.assertTrue("m.98281" in mrna_ids)
         self.assertTrue("Dbxref" in keys)
         self.assertTrue("GO" in keys)
-        self.assertTrue("InterPro" in keys)
         self.assertTrue("SUPERFAMILY:SSF48726" in values)
         self.assertTrue("GO:0005515" in values)
         self.assertTrue("IPR007110" in values)
