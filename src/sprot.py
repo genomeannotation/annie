@@ -69,12 +69,21 @@ def get_blast_info(blast_file):
 #this function reads a gff file and returns a dictionary mapping mrna id's to its parent gene id
 def get_gff_info(gff_file):
     mrna_genes = {}
-    for line in gff_file:
+    for i, line in enumerate(gff_file):
         columns = line.split("\t")
         if len(columns)>1 and columns[2] == "mRNA": #if this is an "mRNA row"
-            #we assume in the info we want is in the 8th column and is in the form "ID=m.XXXX;Parent=g.XXXX" in the file
-            mrna_id = (columns[8].split(";")[0])[3:] #the "[3:]" is to get rid of the "ID="
-            parent_gene = (columns[8].strip().split(";")[1])[7:] #the "[7:]" is to get rid of the "Parent="
+            mrna_id = ""
+            parent_gene = ""
+            for attribute in columns[8].strip().split(";"):
+                split = attribute.split("=")
+                key, val = split[0], split[1]
+                if key == "ID":
+                    mrna_id = val
+                elif key == "Parent":
+                    parent_gene = val
+            if not mrna_id or not parent_gene:
+                print("Failed to get mRNA info at line "+str(i)+" of GFF because it is missing the ID and/or Parent attributes")
+                continue
             mrna_genes[mrna_id] = parent_gene
     return mrna_genes
 

@@ -3,7 +3,7 @@
 import unittest
 import io
 from src.annotation import Annotation
-from src.sprot import read_sprot
+from src.sprot import read_sprot, get_gff_info
 
 class TestSprot(unittest.TestCase):
 
@@ -51,6 +51,11 @@ KRGRAVVLVGKKDRKDVVKEVREVWFGLDS')
         sprot_list = read_sprot(self.blast_file, self.gff_file, self.fasta_file)
         expected = [Annotation("g.4830", "name", "MRH4"), Annotation("m.4830", "product", "ATP-dependent RNA helicase mrh4, mitochondrial")]
         self.assertEquals(sprot_list, expected)
+
+    def test_get_gff_info(self):
+        test_gff = io.StringIO('comp9975_c0_seq1	.	mRNA	25	603	.	+	.	foo=dog;Parent=g.4830;bazz=bub;ID=m.4830')
+        expected = {"m.4830" : "g.4830"}
+        self.assertEquals(get_gff_info(test_gff), expected)
 
 
 ##########################
