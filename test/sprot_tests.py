@@ -9,7 +9,8 @@ class TestSprot(unittest.TestCase):
 
     def setUp(self):
         self.blast_file = io.StringIO(\
-        'm.4830	sp|Q5AZY1|MRH4_EMENI	32.65	49	33	0	114	162	500	548	0.56	34.3')
+        'm.4830	sp|Q5AZY1|MRH4_EMENI	32.65	49	33	0	114	162	500	548	0.56	34.3\n'\
+        'm.4830	sp|Q5AZY1|ASDF1_EMENI	32.65	49	33	0	114	162	500	548	0.56	34.3')
 
         self.gff_file = io.StringIO(\
                 'comp9975_c0_seq1	.	mRNA	25	603	.	+	.	ID=m.4830;Parent=g.4830')

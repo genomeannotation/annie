@@ -63,7 +63,8 @@ def get_blast_info(blast_file):
         columns = line.split("\t")
         mrna = columns[0]
         ref = columns[1]
-        mrna_dbxrefs[mrna] = ref
+        if mrna not in mrna_dbxrefs:
+            mrna_dbxrefs[mrna] = ref
     return mrna_dbxrefs
 
 #this function reads a gff file and returns a dictionary mapping mrna id's to its parent gene id
