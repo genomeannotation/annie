@@ -20,8 +20,7 @@ m.98281\tc95b0824ccd627403aa63f9e474649cc\t7571\tProSiteProfiles\tPS50835\tFibro
         keys = [ipr_list[i].key for i in range(len(ipr_list))]
         values = [ipr_list[i].value for i in range(len(ipr_list))]
         self.assertTrue("m.98281" in mrna_ids)
-        self.assertTrue("Dbxref" in keys)
-        self.assertTrue("GO" in keys)
+        self.assertTrue("db_xref" in keys)
         self.assertTrue("SUPERFAMILY:SSF48726" in values)
         self.assertTrue("GO:0005515" in values)
         self.assertTrue("Interpro:IPR007110" in values)
