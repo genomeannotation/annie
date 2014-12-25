@@ -11,11 +11,11 @@ def read_ipr(io_buffer, whitelist=None):
     for line in io_buffer:
         columns = line.split("\t") #columns are assumed to be tab-separated
         if len(columns)>3 and (columns[3].strip().lower() in whitelist): #if column exists and dbxref is in whitelist (aside from whitespace padding and caps)
-            ipr_list.append(Annotation(columns[0].strip(), "db_xref", columns[3].strip().upper()+":"+columns[4].strip()))
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[3].strip().upper()+":"+columns[4].strip()))
         if len(columns)>13 and columns[13].find("GO:") != -1: #if column exists (we don't care about the whitelist for GO annotations)
-            ipr_list.append(Annotation(columns[0].strip(), "db_xref", columns[13].strip()))
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", columns[13].strip()))
         if len(columns)>11 and columns[11].find("IPR") != -1: #if column exists (we don't care about the whitelist for IPR annotations)
-            ipr_list.append(Annotation(columns[0].strip(), "db_xref", "InterPro:"+columns[11].strip()))
+            ipr_list.append(Annotation(columns[0].strip(), "Dbxref", "InterPro:"+columns[11].strip()))
 
     #this alg removes duplicates
     ipr_list = sorted(ipr_list)
