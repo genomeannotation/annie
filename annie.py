@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sys
 from src.ipr import read_ipr
 from src.sprot import read_sprot
@@ -25,6 +26,8 @@ def main(args):
         print_usage()
         exit()
 
+    my_path = os.path.realpath("/".join(__file__.split('/')[:-1])) + "/"
+
     #check which case the user is doing: ipr, sprot, etc
     case = args[1]
     if case == "ipr": # if ipr case
@@ -37,7 +40,7 @@ def main(args):
         except IOError:
             print("Sorry, Annie says either one of the files doesn't exist or it could not be read.")
             exit()
-        whitelist = [word.strip().lower() for word in open("config/dbxref_whitelist",'r').readlines()] #obtain whitelist and get rid of lowercase and whitespace padding
+        whitelist = [word.strip().lower() for word in open(my_path+"config/dbxref_whitelist",'r').readlines()] #obtain whitelist and get rid of lowercase and whitespace padding
         annotations = read_ipr(ipr_file, whitelist)
         ipr_file.close()
     elif case == "sprot": #if sprot case
@@ -87,8 +90,7 @@ def main(args):
     write_annotations(annotations, file_output)
     file_output.close()
 
+####################################################################################################
 
-
-
-
-main(sys.argv)
+if __name__ == "__main__":
+    main(sys.argv)
