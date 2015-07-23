@@ -38,13 +38,16 @@ def main(args):
         parser.print_help()
         sys.exit()
 
+    # Open output file
     out = "annie_output.tsv"
     if args.output:
         out = args.output
     outfile = open(out, 'w')
 
+    # Create an empty list to store Annotation objects
     annotations = []
 
+    # Add IPRScan results if requested
     if ipr:
         try:
             ipr_file = open(args.iprscan, 'r')
@@ -60,6 +63,7 @@ def main(args):
         annotations.extend(read_ipr(ipr_file, whitelist))
         ipr_file.close()
 
+    # Add SwissProt results if requested
     if sprot:
         try:
             blast_file = open(args.blast_output, 'r')
@@ -73,6 +77,7 @@ def main(args):
         gff_file.close()
         fasta_file.close()
 
+    # Now go back and remove stuff if requested
     if args.blacklist:
         with open(args.blacklist, "r") as bad_products_file:
             bad_products = []
