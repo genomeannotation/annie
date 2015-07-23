@@ -22,4 +22,3 @@ def read_ipr(io_buffer, whitelist=None):
     ipr_list = [ipr_list[i] for i in range(len(ipr_list)) if i== 0 or ipr_list[i] != ipr_list[i-1]]
 
     return ipr_list
-
