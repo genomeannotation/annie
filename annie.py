@@ -8,6 +8,7 @@ from src.sprot import get_fasta_info
 from src.sprot import get_blast_info
 from src.sprot import get_gff_info
 from src.annotation import write_annotations
+from src.fix import fix_anno
 
 def main(args):
     parser = argparse.ArgumentParser(
@@ -21,9 +22,11 @@ def main(args):
     parser.add_argument('-b', '--blast-output')
     parser.add_argument('-g', '--gff', help="GFF3 file corresponding to assembly")
     parser.add_argument('-db', '--blast-database', help="The fasta file against which BLAST was run")
-    parser.add_argument('--blacklist') # TODO
-    parser.add_argument('--whitelist') # TODO
+    parser.add_argument('--blacklist')
+    parser.add_argument('--whitelist')
     parser.add_argument('-o', '--output')
+    parser.add_argument('--fix_bad_products', action='store_true',
+            help="Attempt to fix annotations that violate NCBI guidelines")
     args = parser.parse_args()
 
     # Make sure we got enough args
@@ -96,6 +99,18 @@ def main(args):
             if anno.feature_id not in bad_features:
                 keepers.append(anno)
         annotations = keepers
+
+    # Optional step to fix annotations
+    if args.fix_bad_products:
+        with open("fix_bad_products.log", 'w') as fixlog:
+            fixlog.write("Original\tUpdated\n")
+            for anno in annotations:
+                # only fix if it's a 'product'
+                if anno.key == "product":
+                    new_value = fix_anno(anno.value)
+                    if new_value != anno.value:
+                        fixlog.write(anno.value + "\t" + new_value + "\n")
+                    anno.value = new_value
 
     #write the annotations to file and close
     write_annotations(annotations, outfile)
