@@ -59,8 +59,8 @@ def main(args):
             exit()
         if args.whitelist:
             #obtain whitelist and get rid of lowercase and whitespace padding
-            whitelist = [word.strip().lower() for word in open(args.whitelist,'r').readlines()]            
-            args.whitelist.close()
+            with open(args.whitelist, 'r') as whitelist_file:
+                whitelist = [word.strip().lower() for word in whitelist_file]            
         else:
             whitelist = []
         annotations.extend(read_ipr(ipr_file, whitelist))
