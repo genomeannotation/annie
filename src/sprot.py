@@ -46,7 +46,7 @@ def get_fasta_info(fasta_file):
                 i += 1
             product = " ".join(words[1:i])
             #loop through the words till we find "GN=" or "PE=". We are assuming "PE=" comes immediately after "GN=" so if we hit "PE=" first, then the gene name doesn't exist. We also assume the gene name is one word
-            while (words[i].find("GN=") == -1 and words[i].find("PE=") == -1) or (i+1 != len(words)):
+            while (words[i].find("GN=") == -1 and words[i].find("PE=") == -1) or (i+1 < len(words)):
                 i += 1
             if not words[i].find("GN=") == -1: #if gene name exists
                 name = words[i][3:] #the "[3:]" is to get rid of the "GN=" in the beginning
